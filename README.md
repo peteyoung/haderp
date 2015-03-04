@@ -1,16 +1,41 @@
 # Haderp
 
-## MyJob
-Source: Hadoop in Action 2nd Ed. Listing 4.1
+## WordCount
+###Source:
+hadoop-mapreduce-examples-2.5.0-cdh5.3.0-sources
 
-Deps:
+###Deps:
+
+2002_sou.txt
+
+###Run:
+
+Put unzipped files from Deps into an hdfs folder called `wordcount_in`
+```bash
+hdfs dfs -fs "hdfs://namenode" -mkdir wordcount_in
+stdbuf -i0 -o0 -e0 unzip -p acite75_99.zip | hdfs dfs -fs "hdfs://namenode" -put - wordcount_in/acite75_99.txt
+stdbuf -i0 -o0 -e0 unzip -p apat63_99.zip | hdfs dfs -fs "hdfs://namenode" -put - wordcount_in/apat63_99.txt
+```
+
+Run WordCount
+```bash
+hadoop jar experimental-jobs-1.0.jar WordCount -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount_out
+# or
+HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop WordCount -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount_out
+```
+
+## MyJob
+###Source:
+Hadoop in Action 2nd Ed. Listing 4.1
+
+###Deps:
 
 ```bash
 curl -O http://www.nber.org/patents/acite75_99.zip
 curl -O http://www.nber.org/patents/apat63_99.zip
 ```
 
-Run:
+###Run:
 
 Put unzipped files from Deps into an hdfs folder called `patent_in`
 ```bash
