@@ -12,11 +12,18 @@ curl -O http://www.nber.org/patents/apat63_99.zip
 
 Run:
 
-put unzipped files from Deps into an hdfs folder called `patent_in`
+Put unzipped files from Deps into an hdfs folder called `patent_in`
+```bash
+hdfs dfs -fs "hdfs://namenode" -mkdir patent_in
+stdbuf -i0 -o0 -e0 unzip -p acite75_99.zip | hdfs dfs -fs "hdfs://namenode" -put - patent_in/acite75_99.txt
+stdbuf -i0 -o0 -e0 unzip -p apat63_99.zip | hdfs dfs -fs "hdfs://namenode" -put - patent_in/apat63_99.txt
+```
+
+Run MyJob
 ```bash
 hadoop jar experimental-jobs-1.0.jar MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_in patent_out
 # or
-HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent output
+HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_in patent_out
 ```
 
 ## Setup dev environment
@@ -100,7 +107,7 @@ There is a gradle build file that will pull down hadoop dependencies and build t
 ## Running jobs from the jar
 The jobs in the jar file inherit from Configured and Tool which allows you to specify the NameServer with the command line switch `-fs`. You can also specify the user with a `-D` property like `-D hadoop.job.ugi=<user>`
 ```bash
-hadoop jar sifiHadoopJobs-1.0.jar MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung inputDir outputDir
+hadoop jar experimental-jobs-1.0.jar MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung inputDir outputDir
 ```
 
 ## Running jobs from a class file
