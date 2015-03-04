@@ -1,14 +1,14 @@
 # Haderp
 
 ## WordCount
-###Source:
+####Source:
 hadoop-mapreduce-examples-2.5.0-cdh5.3.0-sources
 
-###Deps:
+####Deps:
 
 2002_sou.txt
 
-###Run:
+####Run:
 
 Put unzipped files from Deps into an hdfs folder called `wordcount_in`
 ```bash
@@ -24,18 +24,25 @@ hadoop jar experimental-jobs-1.0.jar WordCount -fs "hdfs://namenode" -D hadoop.j
 HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop WordCount -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount_out
 ```
 
+Run WordCount2
+```bash
+hadoop jar experimental-jobs-1.0.jar WordCount2 -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount2_out
+# or
+HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop WordCount2 -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount2_out
+```
+
 ## MyJob
-###Source:
+####Source:
 Hadoop in Action 2nd Ed. Listing 4.1
 
-###Deps:
+####Deps:
 
 ```bash
 curl -O http://www.nber.org/patents/acite75_99.zip
 curl -O http://www.nber.org/patents/apat63_99.zip
 ```
 
-###Run:
+####Run:
 
 Put unzipped files from Deps into an hdfs folder called `patent_in`
 ```bash
@@ -58,7 +65,7 @@ Since we're building against hadoop version 2.5.2, pull down the supported versi
 2. Install Java JDK from the downloaded package file
 3. Add the following to your .bashrc
 ```bash
-    export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*)
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*)
 ```
 4. ```sudo mkdir /opt/gradle```
 5. ```cd /opt/gradle```
@@ -67,9 +74,9 @@ Since we're building against hadoop version 2.5.2, pull down the supported versi
 8. ```ln -s gradle-2.2.1/ current```
 9. Add the following to your .bashrc
 ```bash
-    export GRADLE_HOME=/opt/gradle/current
-    PATH=$PATH:$GRADLE_HOME/bin  
-    export PATH  
+export GRADLE_HOME=/opt/gradle/current
+PATH=$PATH:$GRADLE_HOME/bin
+export PATH
 ```
 
 ## Setup a local hadoop instance
