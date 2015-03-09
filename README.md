@@ -31,9 +31,9 @@ hadoop jar experimental-jobs-1.0.jar WordCount2 -fs "hdfs://namenode" -D hadoop.
 HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop WordCount2 -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung wordcount_in wordcount2_out
 ```
 
-## MyJob
+## Patent Jobs
 ####Source:
-Hadoop in Action 2nd Ed. Listing 4.1
+Hadoop in Action 2nd Ed. Listing 4.1 and Section 4.3
 
 ####Deps:
 
@@ -42,20 +42,31 @@ curl -O http://www.nber.org/patents/acite75_99.zip
 curl -O http://www.nber.org/patents/apat63_99.zip
 ```
 
-####Run:
+####Setup:
 
-Put unzipped files from Deps into an hdfs folder called `patent_in`
+Put unzipped files from Deps into hdfs folders
 ```bash
 hdfs dfs -fs "hdfs://namenode" -mkdir patent_in
-stdbuf -i0 -o0 -e0 unzip -p acite75_99.zip | hdfs dfs -fs "hdfs://namenode" -put - patent_in/acite75_99.txt
 stdbuf -i0 -o0 -e0 unzip -p apat63_99.zip | hdfs dfs -fs "hdfs://namenode" -put - patent_in/apat63_99.txt
+
+hdfs dfs -fs "hdfs://namenode" -mkdir patent_cite_in
+stdbuf -i0 -o0 -e0 unzip -p acite75_99.zip | hdfs dfs -fs "hdfs://namenode" -put - patent_in/acite75_99.txt
 ```
 
-Run MyJob
+####Run:
+
+PatentCiters
 ```bash
-hadoop jar experimental-jobs-1.0.jar MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_in patent_out
+hadoop jar experimental-jobs-1.0.jar PatentCiters -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_cite_in patent_cite_out
 # or
-HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_in patent_out
+HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop PatentCiters -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_cite_in patent_cite_out
+```
+
+PatentCitationCount
+```bash
+hadoop jar experimental-jobs-1.0.jar PatentCitationCount -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_cite_in patent_count_out
+# or
+HADOOP_CLASSPATH=~/src/haderp/build/classes/main hadoop PatentCitationCount -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung patent_cite_in patent_count_out
 ```
 
 ## Setup dev environment
@@ -139,7 +150,7 @@ There is a gradle build file that will pull down hadoop dependencies and build t
 ## Running jobs from the jar
 The jobs in the jar file inherit from Configured and Tool which allows you to specify the NameServer with the command line switch `-fs`. You can also specify the user with a `-D` property like `-D hadoop.job.ugi=<user>`
 ```bash
-hadoop jar experimental-jobs-1.0.jar MyJob -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung inputDir outputDir
+hadoop jar experimental-jobs-1.0.jar PatentCiters -fs "hdfs://namenode" -D hadoop.job.ugi=peteyoung inputDir outputDir
 ```
 
 ## Running jobs from a class file
@@ -148,6 +159,6 @@ The class files will be located in `build/classes/main` under the project direct
 1. `cd` into the `build/classes/main` directory
 2. Run the job like so:
 ```bash
-HADOOP_CLASSPATH=. hadoop MyJob -fs "hdfs://namenode:8020" -D hadoop.job.ugi=peteyoung inputDir outputDir
+HADOOP_CLASSPATH=. hadoop PatentCiters -fs "hdfs://namenode:8020" -D hadoop.job.ugi=peteyoung inputDir outputDir
 ```
 
