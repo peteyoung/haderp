@@ -162,3 +162,8 @@ The class files will be located in `build/classes/main` under the project direct
 HADOOP_CLASSPATH=. hadoop PatentCiters -fs "hdfs://namenode:8020" -D hadoop.job.ugi=peteyoung inputDir outputDir
 ```
 
+
+
+[GHCN Weather Data](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/)
+
+

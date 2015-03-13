@@ -11,7 +11,7 @@ repositories {
 }
 
 configurations {
-    // create provided config so our hadoop dependencies aren't included in build
+    // create "provided" config so our hadoop dependencies aren't included in jar file.
     provided
 }
 
@@ -25,7 +25,10 @@ sourceSets {
 dependencies {
     // add hadoop dependencies
     provided group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.5.2'
-}
+
+    // add test dependencies
+    testCompile group: 'junit', name: 'junit', version: '[4.12,)'
+    testCompile group: 'org.apache.mrunit', name: 'mrunit', version: '[1.0,)', classifier: 'hadoop2' }
 
 jar {
     manifest {
